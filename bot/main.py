@@ -1,6 +1,8 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 
 from bot.handlers import start, trade, signals, portfolio, whale
@@ -11,12 +13,15 @@ from core.db.crud import init_db
 async def main():
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+        format="%(asctime)s | %(levelname)s | %(message)s",
     )
 
     await init_db()
 
-    bot = Bot(token=settings.BOT_TOKEN, parse_mode="Markdown")
+    bot = Bot(
+        token=settings.BOT_TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+    )
     storage = RedisStorage.from_url(settings.REDIS_URL)
     dp = Dispatcher(storage=storage)
 
@@ -32,4 +37,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
