@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>TonPilot — AI Trading Agent on TON</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0A0A0F; color: #fff; font-family: 'Inter', sans-serif; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+    h1 { font-size: 3.5rem; font-weight: 800; color: #00B4FF;
+         text-shadow: 0 0 40px #00B4FF55; margin-bottom: 1rem; }
+    .tagline { font-size: 1.3rem; color: #aaa; max-width: 600px; margin-bottom: 2rem; }
+    .badges { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
+    .badge { background: #111; border: 1px solid #00B4FF33; padding: 0.5rem 1.2rem;
+             border-radius: 999px; font-size: 0.9rem; color: #00B4FF; }
+    .cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn { padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem; font-weight: 600;
+           text-decoration: none; cursor: pointer; }
+    .btn-primary { background: #00B4FF; color: #000; }
+    .btn-secondary { background: transparent; border: 1px solid #00B4FF; color: #00B4FF; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem; max-width: 1000px; margin: 4rem auto; padding: 0 2rem; }
+    .card { background: #111; border: 1px solid #1a1a2e; border-radius: 16px; padding: 1.5rem; }
+    .card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .card p { color: #888; font-size: 0.9rem; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>⚡ TonPilot</h1>
+    <p class="tagline">The first AI-native trading agent on TON, living inside Telegram. Trade with plain English.</p>
+    <div class="badges">
+      <span class="badge">🏆 TON AI Agent Hackathon — Track 2</span>
+      <span class="badge">Powered by STON.fi</span>
+      <span class="badge">GPT-4o-mini</span>
+      <span class="badge">Non-custodial</span>
+    </div>
+    <div class="cta">
+      <a href="https://t.me/OnlyTonPilotBot" class="btn btn-p">🤖 Try Live Bot</a>
+      <a href="https://github.com/TWOJ_LOGIN/tonpilot" class="btn btn-secondary">📂 GitHub</a>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="card"><h3>🗣️ Natural Language Trading</h3>
+      <p>Type "buy 50 USDT of NOT" and TonPilot handles the rest — parsing, quoting, and executing on STON.fi.</p></div>
+    <div class="card"><h3>📊 AI Signal Engine</h3>
+      <p>On-chain whale tracking + GPT analysis via TONAPI. Get BULLISH/BEARISH signals in one command.</p></div>
+    <div class="card"><h3>🐋 Whale Copy-Trading</h3>
+      <p>Mirror top TON wallet addresses with one tap and configurable position sizing.</p></div>
+    <div class="card"><h3>🔐 Non-Custodial</h3>
+      <p>All transactions are signed client-side via Tonkeeper. TonPilot never holds your private keys.</p></div>
+  </div>
+
+  <!-- tonconnect-manifest.json must be hosted here -->
+</body>
+</html>
+
+
