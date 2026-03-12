@@ -1,0 +1,53 @@
+from aiogram import Router, F
+from aiogram.filters import Command
+from aiogram.types import Message
+from openai import AsyncOpenAI
+
+from core.ton.indexer import get_wallet_jettons, get_ton_balance, get_recent_trades
+from core.db.crud import get_user_wallet
+from core.config import settings
+
+router = Router()
+client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+NL_TRIGGERS = ("pnl", "portfolio", "balance", "holdings", "how much", "rebalance", "worth")
+
+
+@router.message(Command("portfolio"))
+async def portfolio_cmd(message: Message):
+    wallet = await get_user_wallet(message.from_user.id)
+    if not wallet:
+        return await message.answer("❌ No wallet connected. Demo mode — use /start")
+
+    ton_bal = await get_ton_balance(wallet)
+    jettons = await get_wallet_jettons(wallet)
+
+    lines = [f"💎 TON: `{ton_bal:.4f}`"]
+    for item in jettons[:10]:
+        sym = item["jetton"]["symbol"]
+        decimals = item["jetton"].get("decimals", 9)
+        bal = int(item["balance"]) / (10 ** decimals)
+        lines.append(f"• {sym}: `{bal:.4f}`")
+
+    await message.answer("📊 *Your TON Portfolio*\n\n" + "\n".join(lines))
+
+
+@router.message(F.text.lower().func(lambda t: any(k in t for k in NL_TRIGGERS)))
+async def nl_portfolio(message: Message):
+    wallet = await get_user_wallet(message.from_user.id)
+    if not wallet:
+        return await message.answer("❌ No wallet connected.")
+
+    trades = await get_recent_trades(wallet, limit=30)
+    ton_bal = await get_ton_balance(wallet)
+    summary = f"TON balance: {ton_bal:.4f}, recent swaps: {len(trades)}"
+
+    prompt = (
+        f"User message: '{message.text}'\n"
+        f"Portfolio summary: {summary}\n"
+        f"Answer concisely in 2-3 sentences."
+    )
+    resp = await client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    await message.answer(f"📊 {resp.choices[0].message.content.strip()}")
