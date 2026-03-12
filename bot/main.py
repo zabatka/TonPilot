@@ -2,8 +2,6 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram_tonconnect import ATCMiddleware
-from aiogram_tonconnect.tonconnect.storage.base import ATCRedisStorage
 
 from bot.handlers import start, trade, signals, portfolio, whale
 from core.config import settings
@@ -22,9 +20,6 @@ async def main():
     storage = RedisStorage.from_url(settings.REDIS_URL)
     dp = Dispatcher(storage=storage)
 
-    atc_storage = ATCRedisStorage(storage.redis)
-    dp.update.middleware(ATCMiddleware(atc_storage))
-
     dp.include_router(start.router)
     dp.include_router(trade.router)
     dp.include_router(signals.router)
@@ -37,3 +32,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
